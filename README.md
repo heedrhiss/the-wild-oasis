@@ -1,6 +1,8 @@
+# Next + TypeScript
+
 This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
 
-This project is built on Next and TypeScript.
+This project is an Airbnb website with functionalities of booking and making reservations of cabins and monitoring client's past and future bookings for better user experiences.
 
 ## Getting Started
 
@@ -9,6 +11,8 @@ This project is built on Next and TypeScript.
 - Tailwind
 - Supabase
 - TypeScript
+- Date/fns
+- HeroIcons/react
 
 ### Run the development server:
 
