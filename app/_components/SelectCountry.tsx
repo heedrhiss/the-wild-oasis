@@ -1,11 +1,20 @@
 import { getCountries } from '@/app/_lib/data-service';
 
-// Let's imagine your colleague already built this component 😃
+type SelectProps = {
+  defaultCountry: string;
+  name: string;
+  id: string;
+  className: string;
+};
+type CountryProps = {
+  name: string;
+  flag: string;
+};
 
-async function SelectCountry({ defaultCountry, name, id, className }) {
+async function SelectCountry({ defaultCountry, name, id, className }:SelectProps) {
   const countries = await getCountries();
   const flag =
-    countries.find((country) => country.name === defaultCountry)?.flag ?? '';
+    countries.find((country:CountryProps) => country.name === defaultCountry)?.flag ?? '';
 
   return (
     <select
@@ -16,7 +25,7 @@ async function SelectCountry({ defaultCountry, name, id, className }) {
       className={className}
     >
       <option value=''>Select country...</option>
-      {countries.map((c) => (
+      {countries.map((c:CountryProps) => (
         <option key={c.name} value={`${c.name}%${c.flag}`}>
           {c.name}
         </option>

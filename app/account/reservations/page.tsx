@@ -1,8 +1,32 @@
+import Link from "next/link";
 import ReservationCard from "./ReservationCard";
+
+export const metadata = {
+  title: "Reservations",
+};
+
+type PageProps = {
+  searchParams: {
+    page: string;
+  };
+};
+type Booking = {
+  id: number;
+  created_at: string;
+  startDate: string;
+  endDate: string;
+  numNights: number;
+  numGuests: number;
+  totalPrice: number;
+  status: string;
+  cabins?: {
+    name: string;
+  };
+};
 
 export default function Page() {
   // CHANGE
-  const bookings = [];
+  const bookings: Booking[] = [];
 
   return (
     <div>
@@ -13,9 +37,9 @@ export default function Page() {
       {bookings.length === 0 ? (
         <p className="text-lg">
           You have no reservations yet. Check out our{" "}
-          <a className="underline text-accent-500" href="/cabins">
+          <Link className="underline text-accent-500" href="/cabins">
             luxury cabins &rarr;
-          </a>
+          </Link>
         </p>
       ) : (
         <ul className="space-y-6">

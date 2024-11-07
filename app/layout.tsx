@@ -24,8 +24,8 @@ export default function RootLayout({children}: RootLayoutProps){
   <html lang="en">
     <body className={`${josefinSans.className} flex flex-col bg-primary-950 text-primary-100 min-h-screen`}>
       <Header/>
-      <div className="flex-1 px-8 py-12">
-        <main className="max-w-7xl mx-auto">
+      <div className="flex-1 px-8 py-12 grid">
+        <main className="max-w-7xl mx-auto w-full">
           {children}
         </main>
       </div>
