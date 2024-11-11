@@ -1,17 +1,13 @@
-import CabinCard from "@/app/cabins/CabinCard";
+import { Suspense } from "react";
+import CabinsList from "./CabinsList";
+import Spinner from "@/app/_components/Spinner";
 
-type Cabin = {
-  id: number;
-  name: string;
-  maxCapacity: number;
-  regularPrice: number;
-  discount: number;
-  image: string;
-  description: string;
+export const metadata = {
+  title: "Our Luxury Cabins",
+  description: "Cozy yet luxurious cabins, located right in the heart of the Italian Dolomites. Imagine waking up to beautiful mountain views, spending your days exploring the dark forests around, or just relaxing in your private hot tub under the stars. Enjoy nature's beauty in your own little home away from home. The perfect spot for a peaceful, calm vacation. Welcome to paradise.",
 };
-export default function Page() {
-  // CHANGE
-  const cabins: Cabin[] = [];
+
+export default function Page() {  
 
   return (
     <div>
@@ -26,14 +22,9 @@ export default function Page() {
         away from home. The perfect spot for a peaceful, calm vacation. Welcome
         to paradise.
       </p>
-
-      {cabins.length > 0 && (
-        <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 xl:gap-14">
-          {cabins.map((cabin) => (
-            <CabinCard cabin={cabin} key={cabin.id} />
-          ))}
-        </div>
-      )}
+      <Suspense fallback={<Spinner/>}>
+      <CabinsList/>
+      </Suspense>
     </div>
   );
 }

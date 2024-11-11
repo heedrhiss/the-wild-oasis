@@ -1,11 +1,48 @@
 import { eachDayOfInterval } from 'date-fns';
+import { supabase } from './supabase';
+import { notFound } from 'next/navigation';
 
-interface id {
-  id: number;
-}
+type id = number;
 
 type date = Date | string;
 
+interface guestProps {
+  fullName: string;
+  email: string;
+  nationality: string;
+  countryFlag: string;
+  nationalID: string;
+}
+
+type updateGuestProps =  id  & guestProps
+
+interface cabinProps { 
+  created_at: date;
+  name: string;
+  maxCapacity: number;
+  regularPrice: number;
+  discount: number;
+  description: string;
+  image: string;
+}
+
+type bookingProps = {
+  created_at: date;
+  startDate: date;
+  endDate: date;
+  numNights: number;
+  numGuests: number;
+  cabinPrice: number;
+  extrasPrice?: number;
+  totalPrice: number;
+  status: string;
+  hasBreakfast: boolean;
+  isPaid: boolean;
+  observations?: string;
+  cabinId: number;
+  guestId: number;
+  guest: guestProps;
+}
 // GET
 
 export async function getCabin(id: id) {
@@ -20,6 +57,7 @@ export async function getCabin(id: id) {
 
   if (error) {
     console.error(error);
+    notFound()
   }
 
   return data;
@@ -42,7 +80,7 @@ export async function getCabinPrice(id: id) {
 export const getCabins = async function () {
   const { data, error } = await supabase
     .from('cabins')
-    .select('id, name, maxCapacity, regularPrice, discount, image')
+    .select('id, name, maxCapacity, regPrice, discount, image')
     .order('name');
 
   if (error) {
@@ -54,7 +92,7 @@ export const getCabins = async function () {
 };
 
 // Guests are uniquely identified by their email address
-export async function getGuest(email) {
+export async function getGuest(email: string) {
   const { data, error } = await supabase
     .from('guests')
     .select('*')
@@ -155,7 +193,7 @@ export async function getCountries() {
 /////////////
 // CREATE
 
-export async function createGuest(newGuest) {
+export async function createGuest(newGuest: guestProps) {
   const { data, error } = await supabase.from('guests').insert([newGuest]);
 
   if (error) {
@@ -166,7 +204,7 @@ export async function createGuest(newGuest) {
   return data;
 }
 
-export async function createBooking(newBooking) {
+export async function createBooking(newBooking: bookingProps) {
   const { data, error } = await supabase
     .from('bookings')
     .insert([newBooking])
@@ -186,7 +224,7 @@ export async function createBooking(newBooking) {
 // UPDATE
 
 // The updatedFields is an object which should ONLY contain the updated data
-export async function updateGuest(id, updatedFields) {
+export async function updateGuest(id:id, updatedFields: guestProps) {
   const { data, error } = await supabase
     .from('guests')
     .update(updatedFields)
@@ -201,7 +239,7 @@ export async function updateGuest(id, updatedFields) {
   return data;
 }
 
-export async function updateBooking(id, updatedFields) {
+export async function updateBooking(id:id, updatedFields:guestProps) {
   const { data, error } = await supabase
     .from('bookings')
     .update(updatedFields)
