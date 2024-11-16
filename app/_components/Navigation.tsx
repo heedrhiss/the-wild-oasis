@@ -5,19 +5,19 @@ export default function Navigation() {
     <nav className="z-10 text-xl">
       <ul className="flex gap-16 items-center">
         <li>
-          <Link href="/cabins" className="hover:text-accent-400 transition-colors">
+          <Link href="/cabins" className="hover:text-accent-500 transition-colors">
             Cabins
           </Link>
         </li>
         <li>
-          <Link href="/about" className="hover:text-accent-400 transition-colors">
+          <Link href="/about" className="hover:text-accent-500 transition-colors">
             About
           </Link>
         </li>
         <li>
           <Link
             href="/account"
-            className="hover:text-accent-400 transition-colors"
+            className="hover:text-accent-500 transition-colors"
           >
             Guest area
           </Link>
