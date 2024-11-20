@@ -30,14 +30,15 @@ const navLinks = [
 
 function SideNavigation() {
   const pathname = usePathname();
+  
   return (
     <nav className='border-r border-primary-900'>
       <ul className='flex flex-col gap-2 h-full text-lg'>
         {navLinks.map((link) => (
           <li key={link.name}>
             <Link
-              className={`py-3 px-5 hover:bg-primary-900 hover:text-primary-100 transition-colors flex items-center gap-4 font-semibold text-primary-200
-              ${pathname === link.href ? "text-accent-600" : ""}`}
+              className={`py-3 px-5 hover:bg-primary-900 hover:text-primary-100 transition-colors flex items-center gap-4 font-semibold
+              ${pathname == link.href ? "text-accent-500" : ""}`}
               href={link.href}
             >
               {link.icon}

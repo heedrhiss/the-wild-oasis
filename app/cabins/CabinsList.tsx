@@ -2,7 +2,7 @@ import CabinCard from "@/app/cabins/CabinCard";
 import { getCabins } from "../_lib/data-service";
 import { StaticImport } from "next/dist/shared/lib/get-img-props";
 
-export type CabinsProp = {
+export interface CabinsProp {
   id: number;
   name: string;
   maxCapacity: number;

@@ -5,11 +5,6 @@ export const metadata = {
   title: "Reservations",
 };
 
-type PageProps = {
-  searchParams: {
-    page: string;
-  };
-};
 type Booking = {
   id: number;
   created_at: string;

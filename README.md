@@ -13,6 +13,7 @@ This project is an Airbnb website with functionalities of booking and making res
 - TypeScript
 - Date/fns
 - HeroIcons/react
+- react-day picker
 
 ### Run the development server:
 
