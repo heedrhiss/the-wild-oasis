@@ -3,8 +3,22 @@
 import { isWithinInterval } from "date-fns";
 import { DayPicker, DateRange } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import { useState } from "react";
+import { CabinsProp } from "../cabins/CabinsList";
+import { useReservationContext } from "../context/ReservationContext";
 
+interface DateSelectorProps {
+  cabin: CabinsProp;
+  settings: {
+    breakfastPrice: number;
+    created_at: string;
+    id: number;
+    maxBookingLength: number;
+    maxGuestPerBooking: number;
+    minBookingLength: number
+  };
+  bookedDates: Date[];
+  
+}
 
 // Utility function with type annotations
 function isAlreadyBooked(range: DateRange, datesArr: Date[]): boolean {
@@ -17,23 +31,17 @@ function isAlreadyBooked(range: DateRange, datesArr: Date[]): boolean {
   );
 }
 
-const DateSelector: React.FC = () => {
-  // State and constants with type annotations
-  const [range, setRange] = useState<DateRange>({ from: undefined, to: undefined });
+const DateSelector = ({cabin, settings, bookedDates}:DateSelectorProps) => {
 
-  const regularPrice = 23;
-  const discount = 23;
+  const {range, setRange, resetRange} = useReservationContext()
+  
+  const {regPrice, discount} = cabin;
   const numNights = 23;
-  const cabinPrice = 23;
+  const cabinPrice = discount ? numNights * (regPrice - discount) : numNights * regPrice;
 
   // SETTINGS
-  const minBookingLength = 1;
-  const maxBookingLength = 23;
+  const {minBookingLength, maxBookingLength} = settings;
 
-  // Handler for clearing the date range
-  const resetRange = (): void => {
-    setRange({ from: undefined, to: undefined });
-  };
 
   return (
     <div className="flex flex-col justify-between">
@@ -54,15 +62,15 @@ const DateSelector: React.FC = () => {
       <div className="flex items-center justify-between px-3 bg-accent-500 text-primary-800 h-[70px]">
         <div className="flex items-baseline gap-4">
           <p className="flex gap-2 items-baseline">
-            {discount > 0 ? (
+            {discount! > 0 ? (
               <>
-                <span className="text-2xl">${regularPrice - discount}</span>
+                <span className="text-2xl">${regPrice - discount!}</span>
                 <span className="line-through font-semibold text-primary-700">
-                  ${regularPrice}
+                  ${regPrice}
                 </span>
               </>
             ) : (
-              <span className="text-2xl">${regularPrice}</span>
+              <span className="text-2xl">${regPrice}</span>
             )}
             <span className="">/night</span>
           </p>

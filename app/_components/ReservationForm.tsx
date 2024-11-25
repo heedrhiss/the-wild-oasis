@@ -1,6 +1,19 @@
-function ReservationForm() {
-  // CHANGE
-  const maxCapacity = 23;
+import { CabinsProp } from "../cabins/CabinsList";
+
+type ReservationFormProps = {
+  cabin: CabinsProp
+  settings: {
+    breakfastPrice: number;
+    created_at: string;
+    id: number;
+    maxBookingLength: number;
+    maxGuestPerBooking: number;
+    minBookingLength: number
+  }
+};
+async function ReservationForm({cabin, settings}:ReservationFormProps) {
+ 
+  const {maxCapacity} = cabin
 
   return (
     

@@ -1,8 +1,9 @@
+import { Suspense } from "react";
 import { getCabin, getCabins } from "@/app/_lib/data-service";
-import ReservationForm from "../../_components/ReservationForm";
 import { CabinsProp } from "../CabinsList";
+import Spinner from "@/app/_components/Spinner";
+import Reservation from "@/app/_components/Reservation";
 import CabinDetails from "./cabinDetails";
-import DateSelector from "@/app/_components/DateSelector";
 
 
 type PageProps = {
@@ -20,10 +21,9 @@ export async function generateMetadata({params}:PageProps){
 
 export async function generateStaticParams(){
   const cabins:CabinsProp[] = await getCabins()
-  const ids = cabins.map((cabin:CabinsProp) => ({
+  return cabins.map((cabin:CabinsProp) => ({
     cabinId: String(cabin.id)
   }))
-  return ids
 }
 
 export default async function Page({params}:PageProps) {
@@ -39,10 +39,9 @@ export default async function Page({params}:PageProps) {
           Reserve Cabin-{cabin.name} today. Pay on arrival.
         </h2>
       </div>
-      <div className="grid grid-cols-2 border border-primary-800 min-h-[400px] w-full">
-      <DateSelector/>
-      <ReservationForm/>
-      </div>
+      <Suspense fallback={<Spinner/>}>
+      <Reservation cabin={cabin}/>
+      </Suspense>
     </div>
   );
 }
