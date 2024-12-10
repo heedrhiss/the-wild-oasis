@@ -7,13 +7,12 @@ import CabinDetails from "./cabinDetails";
 
 
 type PageProps = {
-  params: {
-    cabinId: number;
-  };
+  params: Promise<{ cabinId: number }>;
 };
 
 export async function generateMetadata({params}:PageProps){
-  const {name} = await getCabin(params.cabinId)
+  const reserParams = await params
+  const {name} = await getCabin(reserParams.cabinId)
   return {
     title: `Cabin ${name}`
   }
@@ -27,11 +26,11 @@ export async function generateStaticParams(){
 }
 
 export default async function Page({params}:PageProps) {
-  const cabin:CabinsProp = await getCabin(params.cabinId)
-  
+  const reserParams = await params
+  const cabin:CabinsProp = await getCabin(reserParams.cabinId)
 
   return (
-    <div className="max-w-6xl mx-auto mt-8">
+    <div className="max-w-7xl mx-auto mt-8">
       <CabinDetails cabin={cabin} />
 
       <div>

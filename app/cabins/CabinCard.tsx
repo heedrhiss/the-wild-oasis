@@ -35,7 +35,7 @@ function CabinCard({ cabin }:CabinCardProps) {
           </div>
 
           <p className="flex gap-3 justify-end items-baseline">
-            {discount > 0 ? (
+            {discount! > 0 ? (
               <>
                 <span className="text-3xl font-[350]">
                   ${regPrice - (discount ?? 0)}

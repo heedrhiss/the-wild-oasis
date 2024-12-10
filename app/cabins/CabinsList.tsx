@@ -18,6 +18,7 @@ type Props = {
 
 export default async function CabinsList({filter}:Props) {
     const cabins: CabinsProp[] = await getCabins()
+    
     let displayedCabins = cabins;
     if (filter === 'all')  displayedCabins = cabins;
     if (filter === 'small') displayedCabins = cabins.filter((cabin: CabinsProp) => cabin.maxCapacity < 4);

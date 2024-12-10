@@ -14,6 +14,7 @@ This project is an Airbnb website with functionalities of booking and making res
 - Date/fns
 - HeroIcons/react
 - react-day picker
+- Next-auth
 
 ### Run the development server:
 

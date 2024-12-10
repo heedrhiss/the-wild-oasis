@@ -7,9 +7,9 @@ import ReservationReminder from "../_components/ReservationReminder";
 export const revalidate = 3600;
 
 type PageProps = {
-  searchParams: {
+  searchParams: Promise<{
     capacity: string;
-  };
+  }>
 };
 
 export const metadata = {
@@ -17,8 +17,9 @@ export const metadata = {
   description: "Cozy yet luxurious cabins, located right in the heart of the Italian Dolomites. Imagine waking up to beautiful mountain views, spending your days exploring the dark forests around, or just relaxing in your private hot tub under the stars. Enjoy nature's beauty in your own little home away from home. The perfect spot for a peaceful, calm vacation. Welcome to paradise.",
 };
 
-export default function Page({searchParams}:PageProps) {  
-const filter = searchParams?.capacity ?? "all";
+export default async function Page({searchParams}:PageProps) {  
+  const awaitedParams = await searchParams
+const filter = awaitedParams?.capacity ?? "all";
 
   return (
     <div>

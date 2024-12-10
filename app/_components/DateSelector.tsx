@@ -46,7 +46,7 @@ const DateSelector = ({cabin, settings, bookedDates}:DateSelectorProps) => {
   return (
     <div className="flex flex-col justify-between">
       <DayPicker
-        className="pt-10 place-self-center"
+        className="pt-10 place-self-center px-3"
         mode="range"
         min={minBookingLength + 1}
         max={maxBookingLength}
@@ -82,7 +82,7 @@ const DateSelector = ({cabin, settings, bookedDates}:DateSelectorProps) => {
               <p>
                 <span className="text-lg font-bold uppercase">Total</span>{" "}
                 <span className="text-2xl font-semibold">${cabinPrice}</span>
-              </p>
+              </p>x
             </>
           ) : undefined}
         </div>
