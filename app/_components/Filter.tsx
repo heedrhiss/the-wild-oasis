@@ -2,6 +2,12 @@
 
 import { usePathname, useRouter, useSearchParams } from "next/navigation"
 
+interface FilterButtonProp {
+    children: React.ReactNode
+    filter: string
+    active: string
+}
+
 function Filter() {
     const searchParams = useSearchParams()
     const active = searchParams?.get("capacity") ?? "all"
@@ -16,11 +22,11 @@ function Filter() {
     )
 }
 
-const FilterButton = ({ children, filter, active }) => {
+const FilterButton = ({ children, filter, active }:FilterButtonProp) => {
     const router = useRouter()
     const pathname = usePathname()
     const searchParams = useSearchParams()
-    function handleClick(filter){
+    function handleClick(filter:string){
         const params = new URLSearchParams(searchParams)
         params.set("capacity", filter)
         router.replace(`${pathname}?${params.toString()}`, {scroll: false})

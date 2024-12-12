@@ -1,5 +1,6 @@
 import Image from "next/image";
 import { CabinsProp } from "../cabins/CabinsList";
+import { User } from "next-auth";
 
 type ReservationFormProps = {
   cabin: CabinsProp
@@ -10,16 +11,12 @@ type ReservationFormProps = {
     maxBookingLength: number;
     maxGuestPerBooking: number;
     minBookingLength: number
-  },
-  user?: {
-    name: string | null | undefined;
-    email: string | null | undefined;
-    image: string | null | undefined;
   }
+  userData: User | undefined
 };
 
-async function ReservationForm({cabin, user, settings}:ReservationFormProps) {
-  const image = user?.image
+async function ReservationForm({cabin, userData, settings}:ReservationFormProps) {
+  const image = userData?.image
   const {maxCapacity} = cabin
 
   return (
@@ -32,13 +29,13 @@ async function ReservationForm({cabin, user, settings}:ReservationFormProps) {
         {image && (
               <Image 
                 src={image} 
-                alt={user.name || "User avatar"}
+                alt={userData.name || "UserData avatar"}
                 width={30}
                 height={30}
                 className="rounded-full"
               />
             )}
-          <p>{user?.name}</p>
+          <p>{userData?.name}</p>
         </div>
   
       </div>

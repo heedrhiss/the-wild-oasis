@@ -9,9 +9,9 @@ type date = Date | string;
 interface guestProps {
   fullName: string;
   email: string;
-  nationality: string;
-  countryFlag: string;
-  nationalID: string;
+  nationality?: string;
+  countryFlag?: string;
+  nationalID?: string;
 }
 
 type updateGuestProps =  id  & guestProps

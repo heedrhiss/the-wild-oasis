@@ -1,6 +1,6 @@
 # Next + TypeScript
 
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+This is a [Next.js](https://nextjs.org) project hosted with [`Github`](https://github.com/heedrhiss/the-wild-oasis.git).
 
 This project is an Airbnb website with functionalities of booking and making reservations of cabins and monitoring client's past and future bookings for better user experiences.
 
