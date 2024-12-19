@@ -1,23 +1,28 @@
-import { PencilSquareIcon } from '@heroicons/react/24/solid';
 import { format, formatDistance, isPast, isToday, parseISO } from 'date-fns';
+import { PencilSquareIcon } from '@heroicons/react/24/solid';
+import Link from 'next/link';
 import DeleteReservation from './DeleteReservation';
+import { bookingProps } from '@/app/_lib/data-service';
 
-export const formatDistanceFromNow = (dateStr) =>
+interface ReservationCardProp {
+  booking: bookingProps
+}
+export const formatDistanceFromNow = (dateStr:string) =>
   formatDistance(parseISO(dateStr), new Date(), {
     addSuffix: true,
   }).replace('about ', '');
 
-function ReservationCard({ booking }) {
+function ReservationCard({ booking }:ReservationCardProp) {
   const {
     id,
     guestId,
+    created_at,
     startDate,
     endDate,
     numNights,
     totalPrice,
     numGuests,
     status,
-    created_at,
     cabins: { name, image },
   } = booking;
 
@@ -51,7 +56,7 @@ function ReservationCard({ booking }) {
           {format(new Date(startDate), 'EEE, MMM dd yyyy')} (
           {isToday(new Date(startDate))
             ? 'Today'
-            : formatDistanceFromNow(startDate)}
+            : formatDistanceFromNow(startDate as string)}
           ) &mdash; {format(new Date(endDate), 'EEE, MMM dd yyyy')}
         </p>
 
@@ -68,14 +73,18 @@ function ReservationCard({ booking }) {
       </div>
 
       <div className='flex flex-col border-l border-primary-800 w-[100px]'>
-        <a
+        {isPast(startDate) ? null :
+         <>
+         <Link
           href={`/account/reservations/edit/${id}`}
           className='group flex items-center gap-2 uppercase text-xs font-bold text-primary-300 border-b border-primary-800 flex-grow px-3 hover:bg-accent-600 transition-colors hover:text-primary-900'
         >
           <PencilSquareIcon className='h-5 w-5 text-primary-600 group-hover:text-primary-800 transition-colors' />
           <span className='mt-1'>Edit</span>
-        </a>
-        <DeleteReservation bookingId={id} />
+        </Link>
+        {id && <DeleteReservation bookingId={id} />}
+        </>
+        }
       </div>
     </div>
   );

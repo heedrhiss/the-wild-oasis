@@ -6,7 +6,9 @@ type id = number;
 
 type date = Date | string;
 
-interface guestProps {
+export interface guestProps {
+  id?: number;
+  created_at?: string
   fullName: string;
   email: string;
   nationality?: string;
@@ -26,7 +28,8 @@ interface cabinProps {
   image: string;
 }
 
-type bookingProps = {
+export type bookingProps = {
+  id?: number;
   created_at: date;
   startDate: date;
   endDate: date;
@@ -42,6 +45,10 @@ type bookingProps = {
   cabinId: number;
   guestId: number;
   guest: guestProps;
+  cabins: {
+    name: string;
+    image: string;
+  };
 }
 // GET
 

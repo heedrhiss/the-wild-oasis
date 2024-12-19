@@ -1,5 +1,8 @@
 import Link from "next/link";
 import ReservationCard from "./ReservationCard";
+import { auth } from "@/app/_lib/auth";
+import { getBookings } from "@/app/_lib/data-service";
+import { User } from "next-auth";
 
 export const metadata = {
   title: "Reservations",
@@ -18,10 +21,21 @@ type Booking = {
     name: string;
   };
 };
+export interface UserProp {
+  id?: string
+  name?: string | null
+  email?: string | null
+  image?: string | null
+  guestId?: number | null
+}
 
-export default function Page() {
-  // CHANGE
-  const bookings: Booking[] = [];
+export default async function Page() {
+  
+  const session = await auth()
+  const user = session?.user as UserProp
+
+  const bookings = await getBookings(user!.guestId!)
+  // const bookings: Booking[] = []
 
   return (
     <div>
