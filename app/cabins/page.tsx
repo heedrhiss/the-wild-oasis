@@ -4,7 +4,7 @@ import Filter from "../_components/Filter";
 import Spinner from "@/app/_components/Spinner";
 import ReservationReminder from "../_components/ReservationReminder";
 
-export const revalidate = 3600;
+export const revalidate = 3000;
 
 type PageProps = {
   searchParams: Promise<{
@@ -19,7 +19,7 @@ export const metadata = {
 
 export default async function Page({searchParams}:PageProps) {  
   const awaitedParams = await searchParams
-const filter = awaitedParams?.capacity ?? "all";
+  const filter = awaitedParams?.capacity ?? "all";
 
   return (
     <div>

@@ -1,26 +1,12 @@
-import Link from "next/link";
-import ReservationCard from "./ReservationCard";
 import { auth } from "@/app/_lib/auth";
 import { getBookings } from "@/app/_lib/data-service";
-import { User } from "next-auth";
+import Link from "next/link";
+import ReservationCard from "./ReservationCard";
 
 export const metadata = {
   title: "Reservations",
 };
 
-type Booking = {
-  id: number;
-  created_at: string;
-  startDate: string;
-  endDate: string;
-  numNights: number;
-  numGuests: number;
-  totalPrice: number;
-  status: string;
-  cabins?: {
-    name: string;
-  };
-};
 export interface UserProp {
   id?: string
   name?: string | null
