@@ -1,6 +1,6 @@
 import { guestProps } from '@/app/_lib/data-service';
 import { updateGuest } from '../_lib/actions';
-import { Button } from './Button';
+import { ActionButton } from './ActionButton';
 import SelectCountry from './SelectCountry';
 
 interface ProfileProp{
@@ -55,7 +55,7 @@ export default function ProfileForm({guest}:ProfileProp) {
         </div>
 
         <div className="flex justify-end items-center gap-6">
-          <Button/>
+          <ActionButton pendingLabel='Updating'>Update Guest</ActionButton>
         </div>
       </form>
   )

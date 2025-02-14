@@ -35,7 +35,7 @@ export type bookingProps = {
   endDate: date;
   numNights: number;
   numGuests: number;
-  cabinPrice: number;
+  cabinPrice?: number;
   extrasPrice?: number;
   totalPrice: number;
   status: string;
@@ -126,7 +126,7 @@ export async function getBooking(id: id) {
 }
 
 export async function getBookings(guestId : id) {
-  const { data, error, count } = await supabase
+  const { data, error } = await supabase
     .from('bookings')
     // We actually also need data on the cabins as well. But let's ONLY take the data that we actually need, in order to reduce downloaded data.
     .select(
@@ -197,8 +197,7 @@ export async function getCountries() {
   }
 }
 
-/////////////
-// CREATE
+// CREATE Guest
 
 export async function createGuest(newGuest: guestProps) {
   const { data, error } = await supabase.from('guests').insert([newGuest]);
