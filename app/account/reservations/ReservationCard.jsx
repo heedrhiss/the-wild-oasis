@@ -3,28 +3,6 @@ import { PencilSquareIcon } from "@heroicons/react/24/solid";
 import Link from "next/link";
 import DeleteReservation from "./DeleteReservation";
 
-// type Cabin = {
-//   name: string;
-//   image: string;
-// };
-
-// type Booking = {
-//   id: number;
-//   created_at: string;
-//   startDate: string;
-//   endDate: string;
-//   numNights: number;
-//   numGuests: number;
-//   totalPrice: number;
-//   guestId: number;
-//   cabinId: number;
-//   cabins: Cabin
-// };
-
-// interface ReservationCardProp {
-//   booking: Booking
-// }
-
 export const formatDistanceFromNow = (dateStr) =>
   formatDistance(parseISO(dateStr), new Date(), {
     addSuffix: true,

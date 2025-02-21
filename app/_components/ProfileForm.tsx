@@ -6,6 +6,7 @@ import SelectCountry from './SelectCountry';
 interface ProfileProp{
   guest: guestProps
 }
+
 export default function ProfileForm({guest}:ProfileProp) {
  const {fullName, email, countryFlag, nationalID, nationality} = guest
  
@@ -60,5 +61,3 @@ export default function ProfileForm({guest}:ProfileProp) {
       </form>
   )
 }
-
-

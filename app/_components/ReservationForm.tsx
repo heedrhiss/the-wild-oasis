@@ -1,23 +1,37 @@
+"use client";
+
 import Image from "next/image";
 import { CabinsProp } from "../cabins/CabinsList";
 import { User } from "next-auth";
+import { useReservationContext } from "../context/ReservationContext";
+import { differenceInDays } from "date-fns";
+import { createBooking } from "../_lib/actions";
+import { ActionButton } from "./ActionButton";
 
 type ReservationFormProps = {
   cabin: CabinsProp
-  settings: {
-    breakfastPrice: number;
-    created_at: string;
-    id: number;
-    maxBookingLength: number;
-    maxGuestPerBooking: number;
-    minBookingLength: number
-  }
   userData: User | undefined
 };
 
-async function ReservationForm({cabin, userData, settings}:ReservationFormProps) {
+function ReservationForm({cabin, userData}:ReservationFormProps) {
+  const {range} = useReservationContext()
   const image = userData?.image
-  const {maxCapacity} = cabin
+  const {maxCapacity, regPrice, id, discount} = cabin;
+  const numNights = differenceInDays(range.to!, range.from!) ?? 0;
+  const totalPrice = !discount ? numNights * regPrice : numNights * (regPrice - discount)
+  const bindData = {
+    startDate: range.from,
+    endDate: range.to,
+    numNights,
+    totalPrice,
+    cabinId: id,
+    isPaid: false,
+    extrasPrice: 0,
+    status: "unconfirmed",
+    hasBreakfast: false
+  }
+  
+  const createBookingBinded = createBooking.bind(null, bindData)
 
   return (
     
@@ -40,7 +54,9 @@ async function ReservationForm({cabin, userData, settings}:ReservationFormProps)
   
       </div>
 
-      <form className='bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col'>
+      <form action={(formData)=> {
+        createBookingBinded(formData)
+      }} className='bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col'>
         <div className='space-y-2'>
           <label htmlFor='numGuests'>How many guests?</label>
           <select
@@ -61,23 +77,23 @@ async function ReservationForm({cabin, userData, settings}:ReservationFormProps)
         </div>
 
         <div className='space-y-2'>
-          <label htmlFor='observations'>
+          <label htmlFor='comment'>
             Anything we should know about your stay?
           </label>
           <textarea
-            name='observations'
-            id='observations'
+            name='comment'
+            id='comment'
             className='px-5 py-3 bg-primary-200 text-primary-800 w-full shadow-sm rounded-sm'
             placeholder='Any pets, allergies, special requirements, etc.?'
           />
         </div>
 
         <div className='flex justify-end items-center gap-6'>
+          {(range.from && range.to) ?
+          <ActionButton pendingLabel="Reserving...">Reserve now</ActionButton>
+          :
           <p className='text-primary-300 text-base'>Start by selecting dates</p>
-
-          <button className='bg-accent-500 px-8 py-4 text-primary-800 font-semibold hover:bg-accent-600 transition-all disabled:cursor-not-allowed disabled:bg-gray-500 disabled:text-gray-300'>
-            Reserve now
-          </button>
+}
         </div>
       </form>
     </div>

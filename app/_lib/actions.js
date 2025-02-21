@@ -13,6 +13,28 @@ export async function signOutAction(){
    await signOut({ redirectTo: "/" })
 }
 
+
+export async function createBooking(bindData, formData){
+   const session = await auth()
+   if(!session?.user) throw new Error("Unauthorized, You have to be logged In")
+   const newBooking = {
+   ...bindData,
+   numGuests: +(formData.get("numGuests")),
+   comment: formData.get("comment"),
+   guestId: session.user.guestId
+   }
+   const { error } = await supabase
+    .from('bookings')
+    .insert([newBooking])
+    
+  if (error) {
+    console.error(error);
+    throw new Error('Booking could not be created');
+  }
+  revalidatePath(`/cabins/${bindData.cabinId}`)
+  redirect('/cabins/thankyou')
+}
+
 export async function updateGuest(formData){
 
    const session = await auth()

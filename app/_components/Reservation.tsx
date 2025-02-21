@@ -18,7 +18,7 @@ export default async function Reservation({cabin}:ReservationProps) {
     <div className="grid grid-cols-[auto_1fr] border border-primary-800 min-h-[400px] w-full">
       <DateSelector cabin={cabin} settings={settings} bookedDates= {bookedDates}/>
       {session?.user ? 
-      <ReservationForm cabin={cabin} settings={settings} userData={userData} />
+      <ReservationForm cabin={cabin} userData={userData} />
       : 
       <LoginMessage/>
       }
