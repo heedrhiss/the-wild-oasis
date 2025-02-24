@@ -24,6 +24,7 @@ const nextAuth:NextAuthConfig = {
             return false
         }
         },
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
         async session({ session }: any): Promise<Session> {
             try {
                 const guest = await getGuest(session!.user!.email!);
