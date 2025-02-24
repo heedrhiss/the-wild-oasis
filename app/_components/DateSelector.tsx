@@ -3,8 +3,9 @@
 import { differenceInDays, isPast, isSameDay, isWithinInterval } from "date-fns";
 import { DayPicker, DateRange } from "react-day-picker";
 import "react-day-picker/dist/style.css";
-import { CabinsProp } from "../cabins/CabinsList";
+
 import { useReservationContext } from "../context/ReservationContext";
+import { CabinsProp } from "../_type/type";
 
 interface DateSelectorProps {
   cabin: CabinsProp;

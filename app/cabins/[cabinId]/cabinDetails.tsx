@@ -1,7 +1,8 @@
 import { EyeSlashIcon, MapPinIcon, UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import TextExpander from "@/app/_components/TextExpander";
-import { CabinsProp } from "../CabinsList";
+import { CabinsProp } from "@/app/_type/type";
+
 
 type CabinProp = {
     cabin: CabinsProp
