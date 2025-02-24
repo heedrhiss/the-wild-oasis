@@ -1,20 +1,16 @@
 "use client";
 
 import Image from "next/image";
-import { CabinsProp } from "../cabins/CabinsList";
-import { User } from "next-auth";
+
 import { useReservationContext } from "../context/ReservationContext";
 import { differenceInDays } from "date-fns";
 import { createBooking } from "../_lib/actions";
 import { ActionButton } from "./ActionButton";
+import { ReservationFormProps } from "../_type/type";
 
-type ReservationFormProps = {
-  cabin: CabinsProp
-  userData: User | undefined
-};
 
 function ReservationForm({cabin, userData}:ReservationFormProps) {
-  const {range} = useReservationContext()
+  const {range, resetRange} = useReservationContext()
   const image = userData?.image
   const {maxCapacity, regPrice, id, discount} = cabin;
   const numNights = differenceInDays(range.to!, range.from!) ?? 0;
@@ -56,6 +52,7 @@ function ReservationForm({cabin, userData}:ReservationFormProps) {
 
       <form action={(formData)=> {
         createBookingBinded(formData)
+        resetRange()
       }} className='bg-primary-900 py-10 px-16 text-lg flex gap-5 flex-col'>
         <div className='space-y-2'>
           <label htmlFor='numGuests'>How many guests?</label>

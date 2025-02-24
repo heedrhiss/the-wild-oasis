@@ -13,6 +13,7 @@ export async function GET(request:Request, {params}:Proptype){
         return Response.json({cabin, bookedDates})
     }
     catch(err){
+        console.log(err)
         return Response.json({message: "Error fetching cabin"}, {status: 500})
     }
 }

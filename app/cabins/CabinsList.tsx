@@ -1,20 +1,6 @@
 import CabinCard from "@/app/cabins/CabinCard";
 import { getCabins } from "../_lib/data-service";
-import { StaticImport } from "next/dist/shared/lib/get-img-props";
-
-export interface CabinsProp {
-  id: number;
-  name: string;
-  maxCapacity: number;
-  regPrice: number;
-  discount?: number;
-  image: string | StaticImport;
-  description?: string;
-};
-
-type Props = {
-  filter: string;
-};
+import { CabinsProp, Props } from "../_type/type";
 
 export default async function CabinsList({filter}:Props) {
     const cabins: CabinsProp[] = await getCabins()

@@ -1,6 +1,7 @@
 import ProfileForm from "@/app/_components/ProfileForm";
 import { auth } from "@/app/_lib/auth";
-import { getGuest, guestProps } from "@/app/_lib/data-service";
+import { getGuest } from "@/app/_lib/data-service";
+import { guestProps } from "@/app/_type/type";
 
 export const metadata = {
   title: "Profile",

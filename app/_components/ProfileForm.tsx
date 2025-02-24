@@ -1,5 +1,7 @@
-import { guestProps } from '@/app/_lib/data-service';
+
+import Image from 'next/image';
 import { updateGuest } from '../_lib/actions';
+import { guestProps } from '../_type/type';
 import { ActionButton } from './ActionButton';
 import SelectCountry from './SelectCountry';
 
@@ -32,11 +34,14 @@ export default function ProfileForm({guest}:ProfileProp) {
         <div className="space-y-2">
           <div className="flex items-center justify-between">
             <label htmlFor="nationality">Where are you from?</label>
-            <img
+            {countryFlag && <Image
               src={countryFlag}
               alt="Country flag"
+              width={5}
+              height={5}
               className="rounded-sm h-7 w-10"
             />
+            }
           </div>
 
           <SelectCountry

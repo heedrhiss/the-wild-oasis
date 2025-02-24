@@ -1,7 +1,7 @@
 import { UsersIcon } from "@heroicons/react/24/solid";
 import Image from "next/image";
 import Link from "next/link";
-import { CabinsProp } from "./CabinsList";
+import { CabinsProp } from "../_type/type";
 
 export type CabinCardProps = {
   cabin: CabinsProp

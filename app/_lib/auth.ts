@@ -1,8 +1,8 @@
-import NextAuth from "next-auth";
+import NextAuth, {NextAuthConfig, Session, User } from "next-auth";
 import Google from "next-auth/providers/google";
 import { createGuest, getGuest } from "./data-service";
 
-const nextAuth = {
+const nextAuth:NextAuthConfig = {
     providers: [
         Google({
             clientId: process.env.NEXT_GOOGLE_ID,
@@ -10,23 +10,29 @@ const nextAuth = {
         })
         ],
     callbacks: {
-        authorized({auth}:any) {
+        authorized({auth}: { auth: Session | null }) {
            if(auth?.user)  return true
         },
-        async signIn({user}:any) {
+        async signIn({user}: { user: User }) {
         try {
-            const existingGuest = await getGuest(user.email)
+            const existingGuest = await getGuest(user.email!)
             if(!existingGuest) {
-                await createGuest({fullName: user.name, email: user.email})
+                await createGuest({fullName: user.name!, email: user.email!})
             }
             return true
         } catch{
             return false
         }
         },
-        async session({session}:any) {
-            const guest = await getGuest(session.user.email)
-            session.user.guestId = guest.id
+        async session({ session }: any): Promise<Session> {
+            try {
+                const guest = await getGuest(session!.user!.email!);
+                if (guest) {
+                  session!.user!.guestId = guest.id;
+                }
+              } catch (error) {
+                console.error("Session retrieval error:", error);
+              }
             return session
         }
     },

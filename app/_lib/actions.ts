@@ -4,6 +4,8 @@ import { auth, signIn, signOut } from "@/app/_lib/auth";
 import { revalidatePath } from "next/cache";
 import { supabase } from "./supabase";
 import { redirect } from "next/navigation";
+import { CustomUser, bindDataType } from "../_type/type";
+
 
 export async function signInAction(){
    await signIn("google", { redirectTo: "/account" })
@@ -14,14 +16,15 @@ export async function signOutAction(){
 }
 
 
-export async function createBooking(bindData, formData){
+export async function createBooking(bindData:bindDataType, formData:FormData){
    const session = await auth()
    if(!session?.user) throw new Error("Unauthorized, You have to be logged In")
+   const user = session.user as CustomUser;
    const newBooking = {
    ...bindData,
-   numGuests: +(formData.get("numGuests")),
+   numGuests: +(formData.get("numGuests") as string),
    comment: formData.get("comment"),
-   guestId: session.user.guestId
+   guestId: user.guestId
    }
    const { error } = await supabase
     .from('bookings')
@@ -35,20 +38,27 @@ export async function createBooking(bindData, formData){
   redirect('/cabins/thankyou')
 }
 
-export async function updateGuest(formData){
+export async function updateGuest(formData:FormData){
 
    const session = await auth()
    if(!session?.user) throw new Error("Unauthorized, You have to be logged In")
-   const nationalID = formData.get("nationalID")
-   const [nationality, countryFlag] = formData.get("nationality").split("%")
-   const regex = /^[a-zA-Z0-9]{5,13}$/;
+   const user = session.user as CustomUser;
+   const nationalID = formData.get('nationalID') as string;
+  const nationalityData = formData.get('nationality') as string;
+
+  if (!nationalID || !nationalityData) {
+    throw new Error('Missing required fields');
+  }
+
+  const [nationality, countryFlag] = nationalityData.split('%');
+  const regex = /^[a-zA-Z0-9]{5,13}$/;
    
    if(regex.test(nationalID)){
       const updateData = {nationality, countryFlag, nationalID}
       const { error } = await supabase
       .from('guests')
       .update(updateData)
-      .eq('id', session.user.guestId)
+      .eq('id', user.guestId)
       revalidatePath("/account/profile")
 
    if (error) {
@@ -59,41 +69,8 @@ export async function updateGuest(formData){
       throw new Error("Enter a valid National ID") 
    }
 }
-// export async function updateGuest(formData: FormData): Promise<void> {
-//    const session = await auth();
-//    if (!session?.user) throw new Error("Unauthorized, You have to be logged In");
-//    if (!session.user.id) throw new Error("Unauthorized, You have to be logged In");
- 
-//    const nationalID = formData.get("nationalID") as string | null;
-//    const nationalityRaw = formData.get("nationality") as string | null;
- 
-//    if (!nationalID || !nationalityRaw) {
-//      throw new Error("Missing required form data");
-//    }
- 
-//    const [nationality, countryFlag] = nationalityRaw.split("%");
- 
-//    const regex = /^[a-zA-Z0-9]{5,13}$/;
-//    if (!regex.test(nationalID)) {
-//      throw new Error("Enter a valid National ID");
-//    }
- 
-//    const updateData = { nationality, countryFlag, nationalID };
- 
-//    const { error } = await supabase
-//      .from("guests")
-//      .update(updateData)
-//      .eq("id", session.user.guestId);
- 
-//    if (error) {
-//      throw new Error("Guest could not be updated");
-//    }
- 
-//    revalidatePath("/account/profile");
-//  }
- 
 
-export async function deleteBooking(bookingId){
+export async function deleteBooking(bookingId:number){
    const session = await auth()
    if(!session?.user) throw new Error("Unauthorized, to delete booking")
    const { error } = await supabase
@@ -106,13 +83,15 @@ export async function deleteBooking(bookingId){
    }
 }
 
-export async function updateBooking(formData){
+export async function updateBooking(formData: FormData) {
    const session = await auth()
    if(!session?.user) throw new Error("Unauthorized, to update booking")
    const bookingId = Number(formData.get('bookingId'));
+   const comment = String(formData.get('comment') || '').slice(0, 500);
+   const numGuests = +(formData.get('numGuests') as string);
    const updateData = {
-   comment: formData.get('comment').slice(0,500),
-   numGuests: +(formData.get('numGuests'))
+   comment,
+   numGuests
 }
 
    const { error } = await supabase

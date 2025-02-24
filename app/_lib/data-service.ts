@@ -1,55 +1,10 @@
 import { eachDayOfInterval } from 'date-fns';
 import { supabase } from './supabase';
 import { notFound } from 'next/navigation';
+import { date, guestProps } from '../_type/type';
 
 type id = number;
 
-type date = Date | string;
-
-export interface guestProps {
-  id?: number;
-  created_at?: string
-  fullName: string;
-  email: string;
-  nationality?: string;
-  countryFlag?: string;
-  nationalID?: string;
-}
-
-type updateGuestProps =  id  & guestProps
-
-interface cabinProps { 
-  created_at: date;
-  name: string;
-  maxCapacity: number;
-  regularPrice: number;
-  discount: number;
-  description: string;
-  image: string;
-}
-
-export type bookingProps = {
-  id?: number;
-  created_at: date;
-  startDate: date;
-  endDate: date;
-  numNights: number;
-  numGuests: number;
-  cabinPrice?: number;
-  extrasPrice?: number;
-  totalPrice: number;
-  status: string;
-  hasBreakfast: boolean;
-  isPaid: boolean;
-  observations?: string;
-  cabinId: number;
-  guestId: number;
-  guest: guestProps;
-  cabins: {
-    name: string;
-    image: string;
-  };
-}
 // GET
 
 export async function getCabin(id: id) {
@@ -100,7 +55,7 @@ export const getCabins = async function () {
 
 // Guests are uniquely identified by their email address
 export async function getGuest(email: string) {
-  const { data, error } = await supabase
+  const { data } = await supabase
     .from('guests')
     .select('*')
     .eq('email', email)
@@ -111,7 +66,7 @@ export async function getGuest(email: string) {
 }
 
 export async function getBooking(id: id) {
-  const { data, error, count } = await supabase
+  const { data, error } = await supabase
     .from('bookings')
     .select('*')
     .eq('id', id)
@@ -210,23 +165,6 @@ export async function createGuest(newGuest: guestProps) {
   return data;
 }
 
-// export async function createBooking(newBooking: bookingProps) {
-//   const { data, error } = await supabase
-//     .from('bookings')
-//     .insert([newBooking])
-//     // So that the newly created object gets returned!
-//     .select()
-//     .single();
-
-//   if (error) {
-//     console.error(error);
-//     throw new Error('Booking could not be created');
-//   }
-
-//   return data;
-// }
-
-/////////////
 // UPDATE
 
 // The updatedFields is an object which should ONLY contain the updated data
@@ -260,7 +198,7 @@ export async function updateBooking(id:id, updatedFields:guestProps) {
   return data;
 }
 
-/////////////
+
 // DELETE
 
 export async function deleteBooking(id: number) {
