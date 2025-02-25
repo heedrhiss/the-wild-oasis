@@ -1,47 +1,38 @@
-"use client"
+"use client";
 
-import { differenceInDays, isPast, isSameDay, isWithinInterval } from "date-fns";
-import { DayPicker, DateRange } from "react-day-picker";
+import {
+  differenceInDays,
+  isPast,
+  isSameDay,
+  isWithinInterval,
+} from "date-fns";
+import { DayPicker } from "react-day-picker";
 import "react-day-picker/dist/style.css";
 
 import { useReservationContext } from "../context/ReservationContext";
-import { CabinsProp } from "../_type/type";
-
-interface DateSelectorProps {
-  cabin: CabinsProp;
-  settings: {
-    breakfastPrice: number;
-    created_at: string;
-    id: number;
-    maxBookingLength: number;
-    maxGuestPerBooking: number;
-    minBookingLength: number
-  };
-  bookedDates: Date[];
-  
-}
 
 // Utility function with type annotations
-function isAlreadyBooked(range: DateRange, datesArr: Date[]): boolean {
+function isAlreadyBooked(range, datesArr) {
   return (
     range.from !== undefined &&
     range.to !== undefined &&
     datesArr.some((date) =>
-      isWithinInterval(date, { start: range.from!, end: range.to! })
+      isWithinInterval(date, { start: range.from, end: range.to })
     )
   );
 }
 
-const DateSelector = ({cabin, settings, bookedDates}:DateSelectorProps) => {
+const DateSelector = ({ cabin, settings, bookedDates }) => {
+  const { range, setRange, resetRange } = useReservationContext();
 
-  const {range, setRange, resetRange} = useReservationContext()
-  
-  const {regPrice, discount} = cabin;
-  const numNights = differenceInDays(range.to!, range.from!);
-  const cabinPrice = discount ? numNights * (regPrice - discount) : numNights * regPrice;
+  const { regPrice, discount } = cabin;
+  const numNights = differenceInDays(range.to, range.from);
+  const cabinPrice = discount
+    ? numNights * (regPrice - discount)
+    : numNights * regPrice;
 
   // SETTINGS
-  const {minBookingLength, maxBookingLength} = settings;
+  const { minBookingLength, maxBookingLength } = settings;
 
   const displayRange = isAlreadyBooked(range, bookedDates) ? undefined : range;
 
@@ -59,15 +50,22 @@ const DateSelector = ({cabin, settings, bookedDates}:DateSelectorProps) => {
         numberOfMonths={2}
         selected={displayRange}
         onSelect={setRange}
-        disabled={(curDate)=>isPast(curDate) || bookedDates.some((date) => isSameDay(date, curDate) || (range.from && isSameDay(curDate, range.from)))}
+        disabled={(curDate) =>
+          isPast(curDate) ||
+          bookedDates.some(
+            (date) =>
+              isSameDay(date, curDate) ||
+              (range.from && isSameDay(curDate, range.from))
+          )
+        }
       />
 
       <div className="flex items-center justify-between px-3 bg-accent-500 text-primary-800 h-[70px]">
         <div className="flex items-baseline gap-4">
           <p className="flex gap-2 items-baseline">
-            {discount! > 0 ? (
+            {discount > 0 ? (
               <>
-                <span className="text-2xl">${regPrice - discount!}</span>
+                <span className="text-2xl">${regPrice - discount}</span>
                 <span className="line-through font-semibold text-primary-700">
                   ${regPrice}
                 </span>
