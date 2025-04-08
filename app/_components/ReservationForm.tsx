@@ -19,6 +19,7 @@ function ReservationForm({cabin, userData}:ReservationFormProps) {
     startDate: range.from,
     endDate: range.to,
     numNights,
+    cabinPrice: regPrice,
     totalPrice,
     cabinId: id,
     isPaid: false,
@@ -26,7 +27,8 @@ function ReservationForm({cabin, userData}:ReservationFormProps) {
     status: "unconfirmed",
     hasBreakfast: false
   }
-  
+  console.log(cabin)
+
   const createBookingBinded = createBooking.bind(null, bindData)
 
   return (
